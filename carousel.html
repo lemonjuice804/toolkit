@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style rel="stylesheet" type="text/css">
+        .carousel-container {
+            height: 100px;
+            width: 100px;
+            position: relative;
+            margin: 50px;
+        }
+        .carousel-container .panes-wrapper {
+            width: 100px;
+            height: 100px;
+        }
+        .carousel-container .panes {
+            position: relative;
+        }
+        .carousel-container .panes .pane {
+            width: 98px;
+            height: 98px;
+            border: 1px solid gray;
+            left: 100%;
+            position: absolute;
+            opacity: 0;
+        }
+        .carousel-container .panes .pane.active {
+            opacity: 1;
+            left: 0;
+        }
+        .carousel-container .indicators {
+            line-height: 1;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .carousel-container .indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border: 1.5px solid green;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+        .carousel-container .indicator.active {
+            background: green;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="carousel-container">
+      <div class="panes-wrapper">
+        <div class="panes">
+          <div class="pane active">Pane 1</div>
+          <div class="pane">Pane 2</div>
+          <div class="pane">Pane 3</div>
+          <div class="pane">Pane 4</div>
+        </div>
+      </div>
+      <div class="indicators">
+        <span class="indicator active"></span>
+        <span class="indicator"></span>
+        <span class="indicator"></span>
+        <span class="indicator"></span>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        var direction = 1;
+
+        function paneClicked() {
+            let active = $('.panes .active');
+            if (active.next('.pane').length < 1) {
+                direction = -1;
+            }
+            if (active.prev('.pane').length < 1) {
+                direction = 1;
+            }
+            let next = direction > 0 ? active.next('.pane') : active.prev('.pane');
+            active.animate({
+                left: direction > 0 ? '-100%' : '100%',
+                opacity: 0
+            }, 500, function() {
+                active.toggleClass('active');
+            });
+            next.animate({
+                left: 0,
+                opacity: 1
+            }, 500, function() {
+                next.toggleClass('active');
+            });
+
+            const index = next.index();
+            const collection = $('.indicator');
+            collection.removeClass('active');
+            $(collection[index]).addClass('active');
+        }
+
+        function indicatorClicked(e) {
+            const index = $(e.currentTarget).index();
+
+            ['.pane', '.indicator'].forEach(function(selector) {
+                const collection = $(selector);
+                if (selector === '.pane') {
+                    collection.removeAttr('style');
+                }
+                collection.removeClass('active');
+                $(collection[index]).addClass('active');
+            });
+        }
+
+        function setupCarousel() {
+            $('.panes-wrapper').on('click', paneClicked);
+            $('.indicator').on('click', indicatorClicked);
+        }
+
+        setupCarousel();
+    </script>
+  </body>
+</html>
