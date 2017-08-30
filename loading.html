@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style rel="stylesheet" type="text/css">
+
+      .container {
+        background-color: rgb(215,235,255);
+        margin-bottom: 30px;
+        padding: 20px 30px;
+      }
+
+      @keyframes crawler {
+        0%  {opacity: .5}
+        25% {transform: scaleY(.25)}
+        75% {transform: scaleY(.75)}
+      }
+
+      .crawler > span {
+        animation: crawler .9s infinite;
+        background: green;
+        display: inline-block;
+        height: 20px;
+        width: 5px;
+      }
+
+      .crawler > span:nth-child(2) {
+        animation-delay: .3s;
+        margin-left: 5px;
+      }
+
+      .crawler > span:nth-child(3) {
+        animation-delay: .6s;
+        margin-left: 5px;
+      }
+
+
+      @keyframes ellipsis {
+        from {
+          opacity: 1
+        }
+        to {
+          opacity: 0.3
+        }
+      }
+
+      @keyframes growing-ellipsis {
+        from {
+          opacity: 1;
+          transform: scale(.8);
+        }
+        to {
+          opacity: 0.3;
+          transform: scale(1.2);
+        }
+      }
+
+      .dot > span {
+        display: inline-block;
+        background-color: gray;
+        border-radius: 50%;
+        height: 10px;
+        width: 10px;
+      }
+
+      .dot > span:not(:first-child) {
+        margin-left: 4px;
+      }
+
+      .ellipsis > span {
+        animation: ellipsis .9s infinite;
+      }
+      .ellipsis > span:nth-of-type(2) {
+        animation-delay: .3s;
+      }
+      .ellipsis > span:nth-of-type(3) {
+        animation-delay: .6s;
+      }
+
+      .growing-ellipsis > span {
+        animation: growing-ellipsis .9s infinite;
+      }
+
+      .growing-ellipsis > span:nth-of-type(2) {
+        animation-delay: .3s;
+      }
+
+      .growing-ellipsis > span:nth-of-type(3) {
+        animation-delay: .6s;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p>Crawler</p>
+      <div class="crawler">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="container">
+      <p>Ellipsis</p>
+      <div class="ellipsis dot">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="container">
+      <p>Growing Ellipsis</p>
+      <div class="growing-ellipsis dot">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </body>
+</html>

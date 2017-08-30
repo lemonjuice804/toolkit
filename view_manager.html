@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style rel="stylesheet" type="text/css">
+      body {
+        margin: 0;
+      }
+      #myViewManager {
+        position: fixed;
+        width: 800px;
+        height: 800px;
+        padding-top: 50px;
+        background:  pink;
+      }
+      .view {
+        position: absolute;
+        background: purple;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+        width:  100%;
+        border:  1px solid gray;
+      }
+      .view p {
+        height: 200px;
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="main">
+      <button onclick="showNextView()">Show Next View</button>
+      <div id="myViewManager">
+        <div id="view1" class="view">
+          <p>View 1</p>
+          <p>View 1</p>
+          <p>View 1</p>
+          <p>View 1</p>
+          <p>View 1</p>
+          <p>View 1</p>
+          <p>View 1</p>
+          <p>View 1</p>
+        </div>
+        <div id="view2" class="view">View 2</div>
+        <div id="view3" class="view">View 3</div>
+        <div id="view4" class="view">View 4</div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+var ViewManager, vm,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+ViewManager = (function() {
+  function ViewManager(opts) {
+    this.next = bind(this.next, this);
+    this.showView = bind(this.showView, this);
+    var i, idx, len, ref, v;
+    this._views = [];
+    this._history = [];
+    this._currentViewIdx = 0;
+    ref = opts.views;
+    for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
+      v = ref[idx];
+      idx !== 0 && $(v.viewId).hide();
+      this._views.push(v);
+    }
+
+  }
+
+  ViewManager.prototype.showView = function(viewId) {
+    var i, idx, len, ref, results, x;
+    if (this._views[this._currentViewIdx].viewId === viewId) {
+      $(this._views[this._currentViewIdx].viewId).hide();
+      ref = this._views;
+      results = [];
+      for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
+        x = ref[idx];
+        if (x.viewId === viewId) {
+          $(x.viewId).show();
+          results.push(this._currentViewIdx = idx);
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    }
+  };
+
+  ViewManager.prototype.next = function() {
+    $(this._views[this._currentViewIdx].viewId).hide();
+    this._currentViewIdx = (this._currentViewIdx + 1) % this._views.length;
+    return $(this._views[this._currentViewIdx].viewId).show();
+  };
+
+  return ViewManager;
+
+})();
+
+param = {};
+param.el = '#myViewManager';
+param.views = [
+  {
+    viewId: '#view1'
+  }, {
+    viewId: '#view2'
+  }, {
+    viewId: '#view3'
+  }, {
+    viewId: '#view4'
+  }
+];
+vm = new ViewManager(param);
+
+
+showNextView = function() {
+  console.log('show next view');
+  vm.next();
+};
+
+    </script>
+  </body>
+</html>
